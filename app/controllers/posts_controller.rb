@@ -3,11 +3,9 @@ class PostsController < ApplicationController
     post_form = PostForm.new(post_params)
     result = PostCreator.new(post_form).process
     if result.success?
-      @post = result.objects[:post]
-      render json: @post
+      render json: { post: result.objects[:post] }
     else
-      @errors = result.errors
-      render json: @errors
+      render json: { errors: result.errors }, code: 422
     end
   end
 

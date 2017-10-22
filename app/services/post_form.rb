@@ -1,6 +1,4 @@
-class PostForm
-  include ActiveModel::Validations
-
+class PostForm < FormObject
   attr_reader :title, :content, :login, :ip
 
   validates :title, :content, :login, :ip, presence: true
