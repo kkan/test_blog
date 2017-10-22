@@ -11,9 +11,15 @@ class ReviewCreator < ObjectCreator
     return @result.errors += @form_object.errors.full_messages unless @form_object.valid?
 
     post = Post.find(@form_object.post_id)
-    review = Review.create(post: post, score: @form_object.score)
-    @result.objects[:review] = review
+    ActiveRecord::Base.transaction(isolation: :serializable) do
+      review = Review.create!(post: post, score: @form_object.score)
+      post.update!(rating: post.calculate_rating)
+      @result.objects.merge!(review: review, post: post)
+    end
   rescue ActiveRecord::RecordNotFound => e
-    @errors << 'Post not found'
+    @errors << e.message
+  rescue ActiveRecord::StatementInvalid => e
+    retry if e.message =~ /PG::TRSerializationFailure/
+    @result.errors << e.message
   end
 end
