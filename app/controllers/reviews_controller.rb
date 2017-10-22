@@ -3,8 +3,7 @@ class ReviewsController < ApplicationController
     review_form = ReviewForm.new(review_params)
     result = ReviewCreator.new(review_form).process
     if result.success?
-      post_rating = result.objects[:review].post.rating
-      render json: { rating: post_rating }
+      render json: { rating: result.objects[:post].rating.round(2) }
     else
       render json: { errors: result.errors }, code: 422
     end
