@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171022095608) do
+ActiveRecord::Schema.define(version: 20171022205724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "ip_users", force: :cascade do |t|
+    t.inet "ip"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_ip_users_on_user_id"
+  end
 
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id"
@@ -23,6 +31,9 @@ ActiveRecord::Schema.define(version: 20171022095608) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "rating"
+    t.integer "reviews_count", default: 0
+    t.integer "scores_sum"
+    t.index ["rating"], name: "index_posts_on_rating_DESC_NULLS_LAST", order: { rating: :desc }
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -41,6 +52,7 @@ ActiveRecord::Schema.define(version: 20171022095608) do
     t.index ["login"], name: "index_users_on_login"
   end
 
+  add_foreign_key "ip_users", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "reviews", "posts"
 end
