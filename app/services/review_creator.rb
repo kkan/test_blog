@@ -10,10 +10,11 @@ class ReviewCreator < ObjectCreator
   def create_review
     return @result.errors += @form_object.errors.full_messages unless @form_object.valid?
 
-    post = Post.find(@form_object.post_id)
     ActiveRecord::Base.transaction(isolation: :serializable) do
+      post = Post.find(@form_object.post_id)
       review = Review.create!(post: post, score: @form_object.score)
-      post.update!(rating: post.calculate_rating)
+      post.add_score(@form_object.score)
+      post.save!
       @result.objects.merge!(review: review, post: post)
     end
   rescue ActiveRecord::RecordNotFound => e
