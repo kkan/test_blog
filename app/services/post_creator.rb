@@ -16,7 +16,7 @@ class PostCreator < ObjectCreator
                           title: @form_object.title,
                           content: @form_object.content,
                           ip: @form_object.ip)
-      ip_user = IpUser.find_or_create_by!(user: user, ip: @form_object.ip)
+      ip_user = IpUser.find_or_create_by!(user: user, ip: @form_object.ip) if @form_object.ip
       @result.objects.merge!(user: user, post: post, ip_user: ip_user)
     end
   rescue ActiveRecord::StatementInvalid => e
