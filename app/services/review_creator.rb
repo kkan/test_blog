@@ -17,9 +17,7 @@ class ReviewCreator < ObjectCreator
       post.save!
       @result.objects.merge!(review: review, post: post)
     end
-  rescue ActiveRecord::RecordNotFound => e
-    @errors << e.message
-  rescue ActiveRecord::StatementInvalid => e
+  rescue ActiveRecord::StatementInvalid, ActiveRecord::RecordNotFound => e
     retry if e.message =~ /PG::TRSerializationFailure/
     @result.errors << e.message
   end
