@@ -16,11 +16,6 @@ class PostsController < ApplicationController
     render json: { posts: posts }
   end
 
-  def multiuser_ip_addresses
-    ips = IpUser.multiuser_ips.map{ |iu| { ip: iu.ip.to_s, logins: iu.logins } }
-    render json: { ips: ips }
-  end
-
   private
 
   def post_params
