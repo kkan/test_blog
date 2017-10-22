@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   def create
     post_form = PostForm.new(post_params)
-    result = PostCreator.new(post_form).process
+    result = Creators::PostCreator.new(post_form).process
     if result.success?
       post_fields = result.objects[:post].attributes.slice('id', 'title', 'content')
       render json: { post: post_fields }

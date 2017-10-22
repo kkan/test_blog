@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
   def create
     review_form = ReviewForm.new(review_params)
-    result = ReviewCreator.new(review_form).process
+    result = Creators::ReviewCreator.new(review_form).process
     if result.success?
       render json: { rating: result.objects[:post].rating.round(2) }
     else
