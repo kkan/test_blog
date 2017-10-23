@@ -9,7 +9,7 @@ module Creators
     private
 
     def create_review
-      return @result.errors += @form_object.errors.full_messages unless @form_object.valid?
+      return write_form_errors unless @form_object.valid?
 
       ActiveRecord::Base.transaction(isolation: :serializable) do
         post = Post.find(@form_object.post_id)
