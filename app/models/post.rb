@@ -9,12 +9,6 @@ class Post < ApplicationRecord
     order('posts.rating DESC NULLS LAST').limit(n)
   end
 
-  def calculate_rating
-    scores = reviews.pluck(:score)
-    return nil if scores.size.zero?
-    scores.sum.to_f / scores.size
-  end
-
   def add_score(new_score)
     self.reviews_count += 1
     self.scores_sum = scores_sum.to_i + new_score
