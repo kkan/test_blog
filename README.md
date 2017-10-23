@@ -29,3 +29,20 @@ Get list of IP addreses which were used by several users
 ```
 curl http://localhost:3000/ip_addresses/multiuser
 ```
+
+## SQL Task
+```SQL
+WITH q
+     AS (SELECT *,
+                row_number() OVER (PARTITION BY group_id ORDER BY id) AS rno,
+                row_number() OVER (ORDER BY id) AS rne
+         FROM   users)
+SELECT row_number() OVER (ORDER BY max(id)) AS group_number,
+       group_id,
+       count(id)             AS entries_number,
+       min(id)               AS min_id
+FROM   q
+GROUP  BY rne - rno,
+          group_id
+ORDER  BY max(id); 
+```
