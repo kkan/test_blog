@@ -6,7 +6,7 @@ class PostsController < ApplicationController
       post_fields = result.objects[:post].attributes.slice('id', 'title', 'content')
       render json: { post: post_fields }
     else
-      render json: { errors: result.errors }, code: 422
+      render json: { errors: result.errors }, status: 422
     end
   end
 

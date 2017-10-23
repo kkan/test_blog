@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
     if result.success?
       render json: { rating: result.objects[:post].rating.round(2) }
     else
-      render json: { errors: result.errors }, code: 422
+      render json: { errors: result.errors }, status: 422
     end
   end
 
