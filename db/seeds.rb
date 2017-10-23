@@ -1,4 +1,5 @@
-class PostsGeneratorips_number
+class PostsGenerator
+  attr_reader :posts_number, :logins_number, :ips_number
 
   def initialize(posts_number: 1000, logins_number: 100, ips_number: 50)
     @posts_number = posts_number
@@ -8,7 +9,7 @@ class PostsGeneratorips_number
 
   def generate
     posts_number.times do |i|
-      PostCreator.new(PostForm.new(post_params)).process
+      Creators::PostCreator.new(Forms::PostForm.new(post_params)).process
       puts_log(i)
     end
   end
@@ -48,7 +49,7 @@ class ReviewsGenerator
   def generate
     posts_ids.each_with_index do |post_id, i|
       rand(reviews_per_post).times do
-        ReviewCreator.new(ReviewForm.new(review_params(post_id))).process
+        Creators::ReviewCreator.new(Forms::ReviewForm.new(review_params(post_id))).process
       end
       puts_log(i)
     end
@@ -70,4 +71,4 @@ class ReviewsGenerator
 end
 
 PostsGenerator.new(posts_number: 200_000).generate
-ReviewsGenerator.new(rated_posts_number: 2000).generate
+ReviewsGenerator.new(rated_posts_number: 1000).generate
