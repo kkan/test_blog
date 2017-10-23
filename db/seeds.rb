@@ -69,5 +69,5 @@ class ReviewsGenerator
   end
 end
 
-# PostsGenerator.new(posts_number: 200_000).generate
+PostsGenerator.new(posts_number: 200_000).generate
 ReviewsGenerator.new(rated_posts_number: 2000).generate
